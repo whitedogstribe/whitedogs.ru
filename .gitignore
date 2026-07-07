@@ -1,0 +1,34 @@
+# Фото и медиа (синхронизировать через rsync)
+/assets/images/
+/assets/resourceimages/
+/assets/tours/
+
+# MODX core (устанавливается на сервере отдельно)
+/assets/components/
+/core/packages/
+/core/vendor/
+/core/components/
+/core/lexicon/
+/core/docs/
+/core/model/
+/core/src/
+/manager/
+
+# Кэш
+/core/cache/
+
+# База данных
+*.sql
+
+# Docker (только для локальной разработки)
+docker-compose.yml
+Dockerfile
+
+# macOS
+.DS_Store
+
+# Claude
+.claude/
+
+# Логи
+*.log

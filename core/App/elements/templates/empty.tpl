@@ -1,0 +1,1 @@
+{$modx->resource->content|render}

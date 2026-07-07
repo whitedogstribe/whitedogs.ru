@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+$configPath = dirname(__DIR__,2) . '/config.core.php';
+if (!file_exists($configPath)) {
+	echo "Error: config.core.php not found at: {$configPath}\n";
+	echo "Current directory: " . __DIR__ . "\n";
+	exit(1);
+}
+
+require_once $configPath;
+require_once MODX_CORE_PATH . 'components/pageblocks/vendor/autoload.php';
+
+$phinxPath = MODX_CORE_PATH . 'components/pageblocks/vendor/robmorgan/phinx/bin/phinx';
+$phinxConfigPath = MODX_CORE_PATH . 'App/phinx.php';
+
+if (!file_exists($phinxPath)) {
+    echo "Error: Phinx not found. Please run: composer require robmorgan/phinx\n";
+    exit(1);
+}
+
+$args = array_slice($argv, 1);
+if (empty($args)) {
+    $args = ['--help'];
+}
+
+$command = "php " . escapeshellarg($phinxPath) . " " . implode(' ', array_map('escapeshellarg', $args)) . " -c " . escapeshellarg($phinxConfigPath);
+passthru($command, $return);
+exit($return);

@@ -75,7 +75,7 @@ class ProductController extends BaseController
         $product = Product::with('image')->where([
             'id' => $id,
         ])
-            ->select('id', 'title', 'price', 'deposit', 'seo_img', 'rent', 'rental_prices')
+            ->select('id', 'title', 'price', 'deposit', 'old_price', 'seo_img', 'rent', 'rental_prices')
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now())
             ->first();
@@ -91,7 +91,8 @@ class ProductController extends BaseController
         $productData['thumb'] = $imageUrl
             ? \Boshnik\PageBlocks\Facades\Glide::url($imageUrl, 'w=60&h=60&fit=contain&fm=webp')
             : null;
-        unset($productData['seo_img']);
+        $productData['deposit'] = (float)($productData['old_price'] ?: $productData['deposit']);
+        unset($productData['seo_img'], $productData['old_price']);
 
         return response()->json([
             'success' => true,

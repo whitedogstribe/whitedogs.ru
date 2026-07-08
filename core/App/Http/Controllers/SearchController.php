@@ -62,7 +62,7 @@ class SearchController extends BaseController
     private function searchArticles(string $query): array
     {
         return BlogPost::query()
-            ->select('id', 'title', 'alias', 'preview', 'published_at')
+            ->select('id', 'title', 'alias', 'preview', 'img', 'published_at')
             ->where(function ($q) use ($query) {
                 $q->where('title', 'LIKE', "%{$query}%")
                     ->orWhere('description', 'LIKE', "%{$query}%")
@@ -72,13 +72,18 @@ class SearchController extends BaseController
             ->published()
             ->limit(10)
             ->get()
-            ->map(fn (BlogPost $article) => [
-                'type'  => 'article',
-                'title' => $article->title,
-                'date'  => $this->ruDate((int)($article->publishedon), 'j F Y'),
-                'image' => $article->preview ?? '',
-                'url'   => 'blog/' . $article->alias,
-            ])
+            ->map(function (BlogPost $article) {
+                $imgData = $article->preview
+                    ? $article->preview
+                    : (is_string($article->img) ? (json_decode($article->img, true)['url'] ?? '') : '');
+                return [
+                    'type'  => 'article',
+                    'title' => $article->title,
+                    'date'  => $article->published_at ? \Carbon\Carbon::parse($article->published_at)->locale('ru')->translatedFormat('j F Y') : '',
+                    'image' => $imgData,
+                    'url'   => 'blog/' . $article->alias,
+                ];
+            })
             ->all();
     }
 }

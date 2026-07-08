@@ -56,7 +56,7 @@
                             <div class="product-info col d-flex flex-column ps-5 align-items-start">
                                 {if $modx->resource->rent}
                                     <span class="mb-2">от <span class="fw-bold color-orange h4">${$modx->resource->price|number_format:0: '' : ' '}</span> / в день <sup>*от 6 дней</sup></span>
-                                    <span>Залог: <span class="fw-bold">${$modx->resource->deposit|number_format:0: '' : ' '}</span></span>
+                                    <span>Залог: <span class="fw-bold">${($modx->resource->old_price ?: $modx->resource->deposit)|number_format:0: '' : ' '}</span></span>
                                     <span class="mb-3">Вес: <span class="fw-bold">{$modx->resource->weight|number_format:2: '.' : ' '} кг</span></span>
                                     <small>Цена аренды:</small>
                                     <div class="table-price-wrap rounded-3 overflow-hidden w-100 my-1">

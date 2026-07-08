@@ -3,7 +3,7 @@
 {set $extraDates = ($allDates|count) - 1}
 {set $avail = $date.max_people - $date.people}
 {set $cardId = 'tc-' ~ $tour.id}
-{set $imgCount = $tour.images|count}
+{set $imgCount = $tour.images ? ($tour.images|count) : 0}
 {* Статус доступности *}
 {if $avail <= 0}
     {set $availStatus = 'full'}

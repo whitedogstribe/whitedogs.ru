@@ -51,6 +51,14 @@ class TableDataController extends DataController
             }
         }
 
+        // Convert empty strings to NULL for integer columns (MySQL strict mode rejects '' for INT)
+        $intCols = ['parent_id', 'model_id', 'constructor_id', 'field_id', 'menuindex'];
+        foreach ($intCols as $col) {
+            if (array_key_exists($col, $data) && $data[$col] === '') {
+                $data[$col] = null;
+            }
+        }
+
         $data = parent::prepareData($data, $rules);
 
         if (in_array('data', $this->columns) && !empty($extra)) {
@@ -137,6 +145,23 @@ class TableDataController extends DataController
         }
 
         return $rules;
+    }
+
+    public function clearAll(Request $request)
+    {
+        $modelId = (int) $request->get('model_id', 0);
+        $constructorId = (int) $request->get('constructor_id', 0);
+        $fieldId = (int) $request->get('field_id', 0);
+
+        $q = query($this->table)
+            ->where('model_id', $modelId)
+            ->where('constructor_id', $constructorId)
+            ->where('field_id', $fieldId);
+
+        $count = $q->count();
+        $q->delete();
+
+        return response()->append(['count' => $count])->success("Удалено записей: $count");
     }
 
     public function import(Request $request)

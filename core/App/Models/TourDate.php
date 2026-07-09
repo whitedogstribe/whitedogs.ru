@@ -33,8 +33,6 @@ class TourDate extends BaseTourDate
         static::saving(function ($tourDate) {
             if ($tourDate->people >= $tourDate->max_people) {
                 $tourDate->status = 'closed';
-            } else {
-                $tourDate->status = 'open';
             }
         });
     }

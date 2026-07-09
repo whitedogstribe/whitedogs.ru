@@ -39,6 +39,37 @@ class Product extends BaseProduct
             ->orderBy('menuindex');
     }
 
+    public function getOne(string $class, array $criteria = [])
+    {
+        if ($class === 'ContentType') {
+            return new class {
+                public function get($key) {
+                    return $key === 'binary' ? false : 'text/html';
+                }
+                public function getmime() { return 'text/html'; }
+            };
+        }
+        if ($class === 'Template') {
+            return null;
+        }
+        return null;
+    }
+
+    public function prepare() {
+        if (!isset($this->_output)) {
+            $this->_output = '';
+        }
+    }
+
+    public function __call($method, $parameters)
+    {
+        // Intercept xPDO-style scalar get($field) calls from MODX core
+        if ($method === 'get' && count($parameters) === 1 && is_string($parameters[0])) {
+            return $this->getAttribute($parameters[0]);
+        }
+        return parent::__call($method, $parameters);
+    }
+
     // Scopes
 
     public function scopeInStock($query)

@@ -1,4 +1,4 @@
-{set $date = $tour.dates[0]}
+{set $date = $tour.nearest_date}
 {set $allDates = $tour.dates}
 {set $extraDates = ($allDates|count) - 1}
 {set $avail = $date.max_people - $date.people}
@@ -43,11 +43,26 @@
 
             <div class="tc2-counter">{$imgCount > 0 ? $imgCount : 1}+</div>
 
-            <div class="tc2-bookmark">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
-                </svg>
-            </div>
+            {set $guideList = $tour.authors ?: []}
+            {set $guide = $guideList ? $guideList[0] : null}
+            {if $guide}
+                {set $avatarData = $guide.avatar}
+                {set $guideAvatar = ($avatarData is array) ? $avatarData.url : null}
+                {if !$guideAvatar and $avatarData}
+                    {set $avatarParsed = $avatarData|json_decode:true}
+                    {set $guideAvatar = $avatarParsed.url ?: null}
+                {/if}
+                <div class="tc2-guide-badge">
+                    {if $guideAvatar}
+                        <img src="{$guideAvatar}" alt="{$guide.name}" class="tc2-guide-avatar">
+                    {else}
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    {/if}
+                    <span class="tc2-guide-tooltip">Гид {$guide.name}</span>
+                </div>
+            {/if}
 
             {if $imgCount > 1}
                 <button class="tc2-nav tc2-prev" type="button">&#8249;</button>

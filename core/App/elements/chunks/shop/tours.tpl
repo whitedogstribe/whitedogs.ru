@@ -1,4 +1,5 @@
-{set $tours = model('Tour')->with(['dates', 'image', 'nearestDate'])->hasDates()->orderOpenByDate()->published()->limit(2)->get()->toArray()}
+{set $tours = model('Tour')->with(['dates', 'image', 'images', 'nearestDate'])->hasDates()->orderOpenByDate()->published()->limit(2)->get()->toArray()}
+{insert 'file:chunks/tours/card2-assets.tpl'}
 <div class="other-travels pt-4 pb-5">
     <div class="row">
         <div class="col-12 mb-5">
@@ -6,9 +7,9 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 gy-5 mb-5">
+    <div class="row row-cols-1 row-cols-md-2 gy-4 mb-5">
         {foreach $tours as $tour}
-            {include 'file:chunks/tours/card.tpl'}
+            {include 'file:chunks/tours/card2.tpl'}
         {/foreach}
     </div>
     <div class="row">

@@ -78,7 +78,6 @@ return [
                             $html .= '<strong>Предпочтительные бренды:</strong> ' . htmlspecialchars($brand);
                         }
                         $html .= '</blockquote>';
-                        // Products/rent block
                         $productsRaw = $data['products'] ?? [];
                         if (is_string($productsRaw)) {
                             $productsRaw = json_decode($productsRaw, true) ?? [];
@@ -92,7 +91,6 @@ return [
                                     ->published()
                                     ->get();
                                 if ($products->isNotEmpty()) {
-                                    $html .= '<h4>Это снаряжение можно взять в аренду или купить:</h4>';
                                     $html .= '<div class="row">';
                                     foreach ($products as $product) {
                                         $html .= view('file:chunks/shop/article', [
@@ -308,12 +306,22 @@ return [
             })->implode('');
     },
     'shop' => function ($ids = '') {
+        if (empty($ids)) {
+            return '';
+        }
 
         if (!is_array($ids)) {
-            $ids = explode(',', $ids);
+            $ids = array_filter(array_map('intval', explode(',', $ids)));
+        } else {
+            $ids = array_filter(array_map('intval', $ids));
+        }
+
+        if (empty($ids)) {
+            return '';
         }
 
         return Product::whereIn('id', $ids)
+            ->whereHas('category', fn($q) => $q->where('alias', 'equipment'))
             ->orderBy('menuindex')
             ->published()
             ->get()
@@ -387,6 +395,17 @@ return [
             return '';
         }
         return view("@INLINE $template", $params);
+    },
+    'snippet' => function ($name, array $params = []) {
+        if (empty($name)) {
+            return '';
+        }
+        $path = "file:chunks/blogs/snippet_{$name}.tpl";
+        try {
+            return view($path, array_merge(['modx' => modx()], $params));
+        } catch (\Throwable $e) {
+            return '';
+        }
     },
     'trim' => function ($string) {
         if (empty($string)) {

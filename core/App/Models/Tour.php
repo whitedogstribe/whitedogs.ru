@@ -177,16 +177,16 @@ class Tour extends BaseTour
             ->whereNotNull("{$table}.published_at")
             ->where("{$table}.published_at", '<=', now())
             ->where("{$table}.start_date", '>=', $now)
+            ->when(!empty($filters['date_from']), fn($q) =>
+                $q->where("{$table}.start_date", '<=', $filters['date_to'])
+                  ->where("{$table}.end_date", '>=', $filters['date_from'])
+            )
             ->orderBy("{$table}.start_date")
             ->groupBy("{$table}.model_id");
 
         return $query
             ->joinSub($nearest, 'nd', 'nd.model_id', '=', 'tours.id')
             ->where('nd.status', '!=', 'closed')
-            ->when(!empty($filters['date_from']) && !empty($filters['date_to']), fn($q) =>
-            $q->where('nd.start_date', '<=', $filters['date_to'])
-                ->where('nd.end_date', '>=', $filters['date_from'])
-            )
             ->when(!empty($filters['people']), fn($q) =>
             $q->where('nd.people', '>=', $filters['people'])
             )
@@ -367,6 +367,14 @@ class Tour extends BaseTour
             ->whereNull('deleted_at')
 //            ->where('status', 'open')
             ->orderBy('start_date');
+    }
+
+    public function getNearestDateAttribute()
+    {
+        if ($this->relationLoaded('nearestDate')) {
+            return $this->relations['nearestDate'];
+        }
+        return $this->nearestDate()->first();
     }
 
     public function getGuideAttribute(): string

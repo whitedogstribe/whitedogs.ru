@@ -47,18 +47,46 @@
         padding: 3px 10px;
         border-radius: 20px;
     }
-    .tc2-bookmark {
+    .tc2-guide-badge {
         position: absolute;
         top: 10px; right: 10px;
         z-index: 3;
-        background: rgba(255,255,255,.25);
-        backdrop-filter: blur(6px);
+        cursor: default;
+    }
+    .tc2-guide-avatar {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255,255,255,.8);
+        box-shadow: 0 2px 8px rgba(0,0,0,.25);
+        display: block;
+    }
+    .tc2-guide-tooltip {
+        position: absolute;
+        right: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,.75);
         color: #fff;
-        width: 32px; height: 32px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        font-size: 12px;
+        white-space: nowrap;
+        padding: 4px 10px;
+        border-radius: 6px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity .2s;
+    }
+    .tc2-guide-tooltip::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-left-color: rgba(0,0,0,.75);
+    }
+    .tc2-guide-badge:hover .tc2-guide-tooltip {
+        opacity: 1;
     }
     .tc2-nav {
         position: absolute;

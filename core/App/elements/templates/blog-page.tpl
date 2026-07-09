@@ -584,6 +584,46 @@
             margin-bottom: 6px
         }
 
+        .blog-content .figure-group {
+            display: flex;
+            gap: 0;
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
+        .blog-content .figure-group figure {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+        }
+        .blog-content .figure-group figure a {
+            display: block;
+        }
+        .blog-content .figure-group figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0;
+        }
+        .blog-content .figure-group figure:first-child img { border-radius: 6px 0 0 6px; }
+        .blog-content .figure-group figure:last-child img  { border-radius: 0 6px 6px 0; }
+
+        .blog-content .gallery {
+            display: flex;
+            gap: 0;
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
+        .blog-content .gallery figure {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+        }
+        .blog-content .gallery figure a { display: block; }
+        .blog-content .gallery figure img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+        .blog-content .gallery figure:first-child img { border-radius: 6px 0 0 6px; }
+        .blog-content .gallery figure:last-child img  { border-radius: 0 6px 6px 0; }
+        .blog-content .gallery figure:only-child img  { border-radius: 6px; }
+
         .blog-content figure a {
             position: relative
         }
@@ -687,6 +727,34 @@
     </style>
     
     <script>
+        // Group consecutive <figure> elements into flex rows
+        document.querySelectorAll('.blog-content').forEach(function(content) {
+            var nodes = Array.from(content.childNodes);
+            function isFigure(n) { return n.nodeName === 'FIGURE'; }
+            function isBlank(n) { return n.nodeType === 3 && n.nodeValue.trim() === ''; }
+            var i = 0;
+            while (i < nodes.length) {
+                if (isFigure(nodes[i])) {
+                    var group = [nodes[i]];
+                    var j = i + 1;
+                    while (j < nodes.length) {
+                        if (isFigure(nodes[j])) { group.push(nodes[j]); j++; }
+                        else if (isBlank(nodes[j])) { j++; }
+                        else { break; }
+                    }
+                    if (group.length > 1) {
+                        var wrapper = document.createElement('div');
+                        wrapper.className = 'figure-group';
+                        group[0].before(wrapper);
+                        group.forEach(function(fig) { wrapper.appendChild(fig); });
+                    }
+                    i = j;
+                } else {
+                    i++;
+                }
+            }
+        });
+
         const ms = document.getElementById('mobileSocial');
         const btn = document.getElementById('msToggle');
         

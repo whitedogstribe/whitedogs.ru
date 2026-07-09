@@ -11,7 +11,6 @@
                 <strong>Предпочтительные бренды:</strong> {$brand}
             </blockquote>
             {if $products}
-                <h4>Это снаряжение можно взять в аренду или купить:</h4>
                 <div>{$products|shop}</div>
             {/if}
         </div>

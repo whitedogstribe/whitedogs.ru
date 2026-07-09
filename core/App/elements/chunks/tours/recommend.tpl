@@ -1,6 +1,6 @@
 {if $modx->resource->tour_id}
     {set $tour = model('Tour')
-    ->with(['image', 'images', 'dates'])
+    ->with(['image', 'images', 'dates', 'authors'])
     ->published()
     ->open()
     ->where('tours.id', $modx->resource->tour_id)
@@ -9,7 +9,7 @@
 
 {if !$tour}
     {set $tour = model('Tour')
-    ->with(['image', 'images', 'dates'])
+    ->with(['image', 'images', 'dates', 'authors'])
     ->published()
     ->open()
     ->orderOpenByDate()

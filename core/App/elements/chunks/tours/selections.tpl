@@ -20,7 +20,6 @@
                             'date_from' => $item.data_from|date:'Y-m-d',
                             'date_to' => $item.data_to|date:'Y-m-d',
                         ]}
-                        {set $tours = $tours->withDateRange($item.data_from, $item.data_to)}
                     {/if}
 
                     {if $item.people}
@@ -33,8 +32,12 @@
                     {/if}
 
                     {if $item.tours}
-                        {set $tours = $tours->whereIn('tours.id', $item.tours)}
-                        {set $limit = $item.tours|length}
+                        {set $tourIds = []}
+                        {foreach $item.tours as $tid}{if $tid}{set $tourIds[] = $tid}{/if}{/foreach}
+                        {if $tourIds}
+                            {set $tours = $tours->whereIn('tours.id', $tourIds)}
+                            {set $limit = $tourIds|length}
+                        {/if}
                     {/if}
 
                     {set $tours = $tours->open($filter)->limit($limit?:4)}

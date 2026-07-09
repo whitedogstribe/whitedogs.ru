@@ -212,7 +212,7 @@ class ResourceController extends BaseController
     {
         [$sortby, $sortdir] = $this->parseSortParams($request);
 
-        return Tour::with(['dates', 'image', 'images', 'nearestDate'])
+        return Tour::with(['dates', 'image', 'images', 'nearestDate', 'authors'])
             ->when($request->get('country'),   fn($q, $v) => $q->byCountry($v))
             ->when($request->get('type_tour'), fn($q, $v) => $q->byType($v))
             ->when($request->get('author'),    fn($q, $v) => $q->byAuthor($v))

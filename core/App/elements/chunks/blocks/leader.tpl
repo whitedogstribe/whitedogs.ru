@@ -9,7 +9,7 @@
             <div class="d-flex align-items-center col-12 col-lg-auto mx-auto position-relative">
                 {set $img = $img|fromJSON}
                 <img loading="lazy"
-                     src="{$img.url|glide:'f=webp'}"
+                     src="{$img.url|glide:'w=660&q=80&fm=webp'}"
                      class="img-fluid mx-auto"
                      width="330"
                      alt="{$title}">

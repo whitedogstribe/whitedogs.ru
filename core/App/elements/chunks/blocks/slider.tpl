@@ -7,7 +7,7 @@
 
     <div class="f-carousel f-carousel-default" id="tour-carousel">
         {set $bg = $bg|fromJSON}
-        <div class="f-carousel__slide f-carousel__cover" style="background-image:url({$bg.url|glide:'f=webp'})">
+        <div class="f-carousel__slide f-carousel__cover" style="background-image:url({$bg.url|glide:'w=1920&q=75&fm=webp'})">
             <div class="f-carousel__slide-content my-5 mx-auto text-center text-white px-3 py-5">
                 <h2 class="h0 font-cofo text-uppercase text-white mb-4">{$title}</h2>
                 <input
@@ -30,7 +30,7 @@
                     {set $img = $tour.image}
                 {/if}
                 {set $video = $tour.data.video|fromJSON}
-                <div class="f-carousel__slide{$video ? ' f-carousel__slide--video' : ''}" style="background-image:url({$img.url|glide:'f=webp'})">
+                <div class="f-carousel__slide{$video ? ' f-carousel__slide--video' : ''}" style="background-image:url({$img.url|glide:'w=1920&q=75&fm=webp'})">
                     {if $video}
                         <video class="f-carousel__slide-video" autoplay loop muted playsinline preload="metadata"
                                poster="{$img.url|glide:'w=1920&h=1080&fit=crop&fm=webp'}">

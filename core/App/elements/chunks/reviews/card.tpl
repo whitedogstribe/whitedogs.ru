@@ -4,7 +4,7 @@
         <div class="d-flex flex-wrap gap-2">
             {foreach $review.gallery as $idx => $item}
                 {if $idx < 4}
-                    <a href="{$item.url|glide:'f=webp'}" data-fancybox="reviews" class="gallery-item">
+                    <a href="/{$item.url}" data-fancybox="reviews" class="gallery-item">
                         <img loading="lazy" class="rounded-4" src="{$item.url|glide:'w=70&h=70&fit=crop&fm=webp'}" width="70" height="70" alt="{$item.title}">
                     </a>
                 {/if}

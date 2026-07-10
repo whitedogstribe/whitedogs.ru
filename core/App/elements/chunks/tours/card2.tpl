@@ -41,7 +41,9 @@
                 </div>
             {/if}
 
-            <div class="tc2-counter">{$imgCount > 0 ? $imgCount : 1}+</div>
+            {if $tour.discount}
+                <div class="tc2-discount-badge">-{$tour.discount}%</div>
+            {/if}
 
             {set $guideList = $tour.authors ?: []}
             {set $guide = $guideList ? $guideList[0] : null}
@@ -128,7 +130,7 @@
                         data-date="{$tour.date_range}"
                         data-dates='{$dates|toJSON}'
                 >{$availStatus == 'full' ? 'В очередь' : 'Записаться'}</button>
-                <div class="tc2-price">
+                <div class="tc2-price{if $tour.discount} tc2-price--sale{/if}">
                     {if $tour.discount}
                         <span class="tc2-price-old">{$tour.old_price}</span>
                     {/if}

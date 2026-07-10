@@ -35,17 +35,17 @@
         object-fit: cover;
         display: block;
     }
-    .tc2-counter {
+    .tc2-discount-badge {
         position: absolute;
         top: 10px; left: 10px;
         z-index: 3;
-        background: rgba(0,0,0,.45);
-        backdrop-filter: blur(6px);
-        color: #fff;
-        font-size: 12px;
-        font-weight: 700;
+        background: #fff;
+        color: #ef4444;
+        font-size: 13px;
+        font-weight: 800;
         padding: 3px 10px;
         border-radius: 20px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.15);
     }
     .tc2-guide-badge {
         position: absolute;
@@ -192,6 +192,9 @@
         color: #111827;
         white-space: nowrap;
         text-align: right;
+    }
+    .tc2-price--sale {
+        color: #ef4444;
     }
     .tc2-price-old {
         font-size: 12px;

@@ -8,7 +8,7 @@
             {foreach $items as $item}
                 <div class="col-12">
                     <h3 class="font-cofo-m fw-bold mb-3">{$item.title}</h3>
-                    {set $tours = model('Tour')->with(['dates', 'image', 'images'])->published()}
+                    {set $tours = model('Tour')->with(['dates', 'image', 'images', 'authors'])->published()}
                     {set $filter = []}
 
                     {if $item.country}

@@ -704,24 +704,9 @@
             background-color: #059a76
         }
 
-        @media (min-width: 1200px) {
-            .blog-routes {
-                margin:0 -60px
-            }
-        }
-        .blog-routes img {
-            height:375px;
-            object-fit: cover;
-        }
-        .blog-routes h4 {
-            font-size: 1.2rem;
-        }
-        .blog-routes h4 span {
-            font-size: 60% !important;
-            padding-bottom:5px
-        }
-        .blog-routes > div {
-            padding:0 5px;
+        .blog-routes {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
     </style>

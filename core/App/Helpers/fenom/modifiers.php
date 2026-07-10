@@ -22,7 +22,29 @@ return [
         $editorjsBlocks = [];
 
         foreach ($content['blocks'] as $block) {
-            if (isset($equipmentFieldIds[$block['type']])) {
+            if ($block['type'] === 'routes') {
+                if ($editorjsBlocks) {
+                    $html .= $editorjs->render($editorjsBlocks);
+                    $editorjsBlocks = [];
+                }
+                $ids = $block['data']['ids'] ?? [];
+                if ($ids) {
+                    $tours = Tour::with(['dates', 'image', 'images', 'nearestDate', 'authors'])
+                        ->whereIn('tours.id', $ids)
+                        ->published()
+                        ->get()
+                        ->sortBy(fn($t) => array_search($t->id, $ids))
+                        ->values();
+                    if ($tours->isNotEmpty()) {
+                        $html .= view('file:chunks/tours/card2-assets.tpl', []);
+                        $html .= '<div class="blog-routes row row-cols-1 row-cols-sm-2 g-3 my-3">';
+                        foreach ($tours as $tour) {
+                            $html .= view('file:chunks/tours/card2.tpl', ['tour' => $tour]);
+                        }
+                        $html .= '</div>';
+                    }
+                }
+            } elseif (isset($equipmentFieldIds[$block['type']])) {
                 // Flush accumulated EditorJS blocks first
                 if ($editorjsBlocks) {
                     $html .= $editorjs->render($editorjsBlocks);

@@ -2,17 +2,32 @@
 .tmn {
     display: none;
     position: fixed;
-    bottom: 0; left: 0; right: 0;
+    bottom: 0;
+    left: 0; right: 0;
     z-index: 1040;
     background: #1c1c1e;
     border-top: 1px solid rgba(255,255,255,.08);
     box-shadow: 0 -4px 24px rgba(0,0,0,.35);
     padding-bottom: env(safe-area-inset-bottom);
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
     will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+}
+/* dvh = dynamic viewport height, следит за адресной строкой iOS Safari 15.4+ */
+@supports (bottom: env(safe-area-inset-bottom)) {
+    @media (max-width: 991px) {
+        .tmn {
+            bottom: env(safe-area-inset-bottom);
+        }
+    }
+}
+@supports (height: 1dvh) {
+    @media (max-width: 991px) {
+        .tmn {
+            bottom: 0;
+            bottom: env(safe-area-inset-bottom);
+        }
+    }
 }
 @media (max-width: 991px) { .tmn { display: block; } }
 
@@ -21,7 +36,6 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     margin: 0; padding: 0;
     list-style: none;
@@ -145,18 +159,6 @@
             li.style.display = 'none';
         }
     });
-
-    // visualViewport: фиксируем меню к низу реального viewport на iOS
-    if (window.visualViewport) {
-        function repositionNav() {
-            const vv = window.visualViewport;
-            const offset = window.innerHeight - vv.height - vv.offsetTop;
-            nav.style.transform = 'translateZ(0) translateY(' + Math.max(0, offset) + 'px)';
-        }
-        window.visualViewport.addEventListener('resize', repositionNav, { passive: true });
-        window.visualViewport.addEventListener('scroll', repositionNav, { passive: true });
-        repositionNav();
-    }
 
     // Scrollspy: подсветка активного раздела
     const links = list.querySelectorAll('.tmn__link:not(.tmn__link--cta)');

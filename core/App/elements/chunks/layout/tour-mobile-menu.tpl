@@ -124,6 +124,10 @@
 <script>
 (function () {
     const nav = document.querySelector('.tmn');
+    // Перемещаем в body чтобы position:fixed не ломался из-за transform на родителях
+    if (nav && nav.parentElement !== document.body) {
+        document.body.appendChild(nav);
+    }
     const list = nav && nav.querySelector('.tmn__list');
     if (!nav || !list) return;
 

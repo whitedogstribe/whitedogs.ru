@@ -8,6 +8,11 @@
     border-top: 1px solid rgba(255,255,255,.08);
     box-shadow: 0 -4px 24px rgba(0,0,0,.35);
     padding-bottom: env(safe-area-inset-bottom);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 @media (max-width: 991px) { .tmn { display: block; } }
 

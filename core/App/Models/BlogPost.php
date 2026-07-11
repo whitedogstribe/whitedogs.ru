@@ -54,6 +54,33 @@ class BlogPost extends BaseBlogPost
                 $model->author_id = 0;
             }
         });
+
+        static::saved(function ($model) {
+            if (empty($model->img) || empty($model->alias)) {
+                return;
+            }
+            $img = is_array($model->img) ? $model->img : json_decode($model->img, true);
+            if (!is_array($img) || strpos($img['url'] ?? '', 'pbtempfile') === false) {
+                return;
+            }
+            $oldPath = $img['url'];
+            $img['url'] = str_replace('pbtempfile', $model->alias, $img['url']);
+            if (isset($img['path'])) {
+                $img['path'] = str_replace('pbtempfile', $model->alias, $img['path']);
+            }
+            $oldFull = MODX_BASE_PATH . $oldPath;
+            $newFull = MODX_BASE_PATH . $img['url'];
+            if (file_exists($oldFull)) {
+                $dir = dirname($newFull);
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0755, true);
+                }
+                rename($oldFull, $newFull);
+            }
+            query('blog_posts')->where('id', $model->id)->update([
+                'img' => json_encode($img, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            ]);
+        });
     }
 
     public function team()

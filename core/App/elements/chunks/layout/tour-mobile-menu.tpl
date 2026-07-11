@@ -184,12 +184,23 @@
         sections.forEach(s => io.observe(s.el));
     }
 
-    // Плавный клик (предотвращаем drag-click)
+    // Клик: скроллим к секции через JS, не даём браузеру обрабатывать href
     let dragDist = 0, touchStartX = 0;
     list.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; dragDist = 0; }, { passive: true });
     list.addEventListener('touchmove', e => { dragDist = Math.abs(e.touches[0].clientX - touchStartX); }, { passive: true });
     list.querySelectorAll('.tmn__link').forEach(a => {
-        a.addEventListener('click', e => { if (dragDist > 6) e.preventDefault(); });
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            if (dragDist > 6) return;
+            const hash = a.getAttribute('href').split('#')[1];
+            if (!hash) return;
+            const target = document.getElementById(hash);
+            if (target) {
+                const navH = nav.offsetHeight || 56;
+                const top = target.getBoundingClientRect().top + window.scrollY - navH;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
     });
 })();
 </script>

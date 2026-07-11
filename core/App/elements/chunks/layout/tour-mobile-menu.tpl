@@ -131,6 +131,36 @@
     const list = nav && nav.querySelector('.tmn__list');
     if (!nav || !list) return;
 
+    // Скрываем пункты меню для разделов, которых нет на странице
+    list.querySelectorAll('.tmn__item').forEach(li => {
+        const a = li.querySelector('.tmn__link:not(.tmn__link--cta)');
+        if (!a) return;
+        const hash = a.getAttribute('href').split('#')[1];
+        if (hash && !document.getElementById(hash)) {
+            li.style.display = 'none';
+        }
+    });
+
+    // JivoSite: поднимаем кнопку над меню на мобильных
+    const tmnH = nav.offsetHeight || 56;
+    const jivoOffset = tmnH + 8;
+    function liftJivo() {
+        document.querySelectorAll('jdiv, #jivo-iframe-container, [id*="jvlabel"], [class*="JivoSite"]').forEach(el => {
+            if (el.tagName && window.innerWidth < 992) {
+                el.style.setProperty('bottom', jivoOffset + 'px', 'important');
+            }
+        });
+    }
+    if (typeof window.jivo_onLoadCallback === 'function') {
+        const _orig = window.jivo_onLoadCallback;
+        window.jivo_onLoadCallback = function() { _orig(); liftJivo(); };
+    } else {
+        window.jivo_onLoadCallback = liftJivo;
+    }
+    // Также пробуем через небольшую задержку (виджет может загрузиться позже)
+    setTimeout(liftJivo, 2000);
+    setTimeout(liftJivo, 5000);
+
     // Scrollspy: подсветка активного раздела
     const links = list.querySelectorAll('.tmn__link:not(.tmn__link--cta)');
     const sections = [];

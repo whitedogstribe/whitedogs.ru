@@ -593,16 +593,6 @@ header .nav-link {
    МОБИЛЬНОЕ МЕНЮ
 ═══════════════════════════════════════════ */
 
-.mobile-menu::before {
-    position: absolute;
-    content: '';
-    background-color: #000;
-    filter: blur(16px);
-    bottom: -2.5rem;
-    right: -2.5rem;
-    left: -2.5rem;
-    height: 8rem;
-}
 
 .modal-mobile-menu .modal-dialog {
     width: 100%;
@@ -656,12 +646,6 @@ header .nav-link {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
     white-space: nowrap;
-}
-.mobile-menu ul::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-}
-.mobile-menu ul .nav-item {
-    padding: 1rem 0;
 }
 .modal-mobile-menu ul li:last-child .nav-link { border-bottom: none; }
 

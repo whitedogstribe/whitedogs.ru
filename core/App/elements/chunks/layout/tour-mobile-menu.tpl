@@ -13,22 +13,6 @@
     transform: translate3d(0,0,0);
     will-change: transform;
 }
-/* dvh = dynamic viewport height, следит за адресной строкой iOS Safari 15.4+ */
-@supports (bottom: env(safe-area-inset-bottom)) {
-    @media (max-width: 991px) {
-        .tmn {
-            bottom: env(safe-area-inset-bottom);
-        }
-    }
-}
-@supports (height: 1dvh) {
-    @media (max-width: 991px) {
-        .tmn {
-            bottom: 0;
-            bottom: env(safe-area-inset-bottom);
-        }
-    }
-}
 @media (max-width: 991px) { .tmn { display: block; } }
 
 .tmn__list {

@@ -32,3 +32,5 @@ Dockerfile
 
 # Логи
 *.log
+core/config/config.inc.php
+config.core.php
